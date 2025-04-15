@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Digital Bloom</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+    }
+</script>
+<script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    [x-cloak] {
+      display: none;
+    }
+</style>
+</head>
+ 
+<body x-data="{
+  dark: false,
+  isOpen: false,
+  search: '',
+  category: 'All',
+  items: [
+    { title: 'Digital Art 1', category: 'Art', img: 'https://via.placeholder.com/500x300?text=Art+1' },
+    { title: 'Sound Design', category: 'Music', img: 'https://via.placeholder.com/500x300?text=Sound+Design' },
+    { title: 'Poster Design', category: 'Design', img: 'https://via.placeholder.com/500x300?text=Poster+Design' },
+    { title: 'Digital Art 2', category: 'Art', img: 'https://via.placeholder.com/500x300?text=Art+2' }
+  ],
+  get filteredItems() {
+    return this.items.filter(i => {
+      const matchCategory = this.category === 'All' || i.category === this.category;
+      const matchSearch = i.title.toLowerCase().includes(this.search.toLowerCase());
+      return matchCategory && matchSearch;
+    });
+  }
+}" :class="{ 'dark': dark }" class="transition-colors duration-300 bg-white dark:bg-gray-900 text-gray-800 dark:text-white">
+ 
+  <!-- Navbar -->
+<header class="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-50">
+<div class="container mx-auto px-4 py-4 flex justify-between items-center">
+<img src="https://via.placeholder.com/150x50?text=Logo" alt="Digital Bloom Logo" class="h-10">
+<h1 class="text-2xl font-bold text-gray-800 dark:text-white">Digital Bloom</h1>
+<nav class="space-x-6 hidden md:block">
+<a href="#features" class="hover:text-indigo-600 dark:hover:text-indigo-400 text-gray-800 dark:text-white">Features</a>
+<a href="#gallery" class="hover:text-indigo-600 dark:hover:text-indigo-400 text-gray-800 dark:text-white">Gallery</a>
+<a href="#contact" class="hover:text-indigo-600 dark:hover:text-indigo-400 text-gray-800 dark:text-white">Contact</a>
+<a href="#ai" class="hover:text-indigo-600 dark:hover:text-indigo-400 text-gray-800 dark:text-white">AI</a>
+</nav>
+<button @click="dark = !dark" class="ml-4 p-2 rounded-full bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+<span x-show="!dark" x-cloak>☀️</span>
+<span x-show="dark" x-cloak>🌙</span>
+</button>
+</div>
+</header>
+ 
+  <!-- Search & Filter -->
+<section class="bg-gray-100 dark:bg-gray-900 py-6">
+<div class="container mx-auto px-4 flex flex-col md:flex-row items-center gap-4">
+<input x-model="search" type="text" placeholder="Search artworks..." class="w-full md:w-1/2 p-3 rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+<select x-model="category" class="w-full md:w-1/4 p-3 rounded border border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white">
+<option value="All">All</option>
+<option value="Art">Art</option>
+<option value="Music">Music</option>
+<option value="Design">Design</option>
+</select>
+</div>
+</section>
+ 
+  <!-- Gallery Section -->
+<section id="gallery" class="py-16">
+<div class="container mx-auto px-4">
+<h3 class="text-3xl font-semibold text-center mb-12 text-gray-800 dark:text-white">Showcase</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<template x-for="item in filteredItems" :key="item.title">
+<div class="bg-white dark:bg-gray-800 p-3 rounded shadow hover:shadow-xl transition">
+<img :src="item.img" :alt="item.title" class="rounded mb-3">
+<h4 class="text-lg font-semibold text-gray-900 dark:text-white" x-text="item.title"></h4>
+<p class="text-sm text-gray-600 dark:text-gray-300" x-text="item.category"></p>
+</div>
+</template>
+</div>
+</div>
+</section>
+ 
+  <!-- Contact Section -->
+<section id="contact" class="bg-white dark:bg-gray-800 py-16">
+<div class="container mx-auto px-4 text-center">
+<h3 class="text-3xl font-semibold mb-4 text-gray-800 dark:text-white">Get in Touch</h3>
+<p class="mb-6 text-gray-800 dark:text-white">Want to collaborate or learn more? Reach out!</p>
+<a href="mailto:your.email@example.com" class="inline-block bg-indigo-600 text-white py-2 px-6 rounded-full hover:bg-indigo-700 transition">Email Us</a>
+</div>
+</section>
+ 
+  <!-- Footer -->
+<footer class="bg-gray-800 text-white text-center py-6">
+<p>&copy; 2025 CreativeTech. All rights reserved.</p>
+</footer>
+ 
+</body>
+</html>
